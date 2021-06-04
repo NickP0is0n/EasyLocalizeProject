@@ -7,10 +7,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.Text
-import androidx.compose.material.TextField
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -25,9 +22,12 @@ import java.awt.FileDialog
 class MainWindowView {
     private lateinit var stringList: MutableList<LocalizedString>
     private lateinit var fieldValuesModel: FieldValuesViewModel
+    private var selectedID = -1
+    private val controller = MainWindowController()
 
     @Composable
     fun MainUI() {
+        val window = LocalAppWindow.current
         Row {
             fieldValuesModel = FieldValuesViewModel(
                 stringFieldValue = remember { mutableStateOf("Select an ID") },
@@ -38,6 +38,14 @@ class MainWindowView {
             Column {
                 StringTextField()
                 CommentTextField()
+                Button (
+                    onClick = {
+                        controller.onExportButtonClick(stringList, window)
+                    },
+                    modifier = Modifier.padding(top = 10.dp)
+                        ) {
+                    Text("Export translations to file...")
+                }
             }
         }
     }
@@ -70,6 +78,7 @@ class MainWindowView {
             onClick = {
                 fieldValuesModel.stringFieldValue.value = item.text
                 fieldValuesModel.commentFieldValue.value = item.comment
+                selectedID = stringList.indexOf(item)
             }
         ) {
             Text(item.id)
@@ -84,7 +93,17 @@ class MainWindowView {
                 modifier = Modifier.padding(top = 10.dp)
             )
             TextField (value = fieldValuesModel.stringFieldValue.value,
-                onValueChange = { fieldValuesModel.stringFieldValue.value = it },
+                onValueChange = { run {
+                    fieldValuesModel.stringFieldValue.value = it
+                    if (selectedID != -1) {
+                        val currentString = this@MainWindowView.stringList[selectedID]
+                        this@MainWindowView.stringList[selectedID] = LocalizedString(
+                            currentString.id,
+                            it,
+                            currentString.comment
+                        )
+                    }
+                } },
                 modifier = Modifier
                     .padding(top = 10.dp)
                     .size(width = 450.dp, height = 150.dp))
@@ -99,7 +118,17 @@ class MainWindowView {
                 modifier = Modifier.padding(top = 10.dp)
             )
             TextField (value = fieldValuesModel.commentFieldValue.value,
-                onValueChange = { fieldValuesModel.commentFieldValue.value = it },
+                onValueChange = { run {
+                    fieldValuesModel.commentFieldValue.value = it
+                    if (selectedID != -1) {
+                        val currentString = this@MainWindowView.stringList[selectedID]
+                        this@MainWindowView.stringList[selectedID] = LocalizedString(
+                            currentString.id,
+                            currentString.text,
+                            it
+                        )
+                    }
+                } },
                 modifier = Modifier
                     .padding(top = 10.dp)
                     .size(width = 450.dp, height = 150.dp))
@@ -114,5 +143,23 @@ class MainWindowView {
         openDialog.isVisible = true
         val stringFile = openDialog.files[0]
         return parser.fromFile(stringFile)
+    }
+
+    @Composable
+    private fun showExportSuccessAlert() {
+        AlertDialog(
+            title = {
+                Text("Success")
+            },
+            text = {
+                Text("Translation file successfully exported!")
+            },
+            onDismissRequest = {},
+            confirmButton = {
+                Button(onClick = {}) {
+                    Text("OK")
+                }
+            }
+        )
     }
 }
