@@ -42,9 +42,10 @@ class MainWindowView {
                     onClick = {
                         controller.onExportButtonClick(stringList, window)
                     },
+                    colors = ButtonDefaults.buttonColors(backgroundColor = Color(30, 144, 255)),
                     modifier = Modifier.padding(top = 10.dp)
                         ) {
-                    Text("Export translations to file...")
+                    Text(text ="Export translations to file...", color = Color.White)
                 }
             }
         }
