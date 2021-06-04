@@ -37,7 +37,7 @@ public class LocalizeParser {
             }
 
             else {
-                Pattern wrappedStringPattern = Pattern.compile("([\"'])(?:(?=(\\\\?))\\2.)*?\\1");
+                Pattern wrappedStringPattern = Pattern.compile("([\"])(?:(?=(\\\\?))\\2.)*?\\1");
                 Matcher patternMatcher = wrappedStringPattern.matcher(currentLine);
 
                 retrieveId(currentLine, patternMatcher);
@@ -61,7 +61,7 @@ public class LocalizeParser {
     }
 
     private boolean isAComment(String currentLine) {
-        return currentLine.startsWith("//") || currentLine.startsWith("/*");
+        return currentLine.startsWith("//") || currentLine.startsWith("/*") || multilineCommentMode;
     }
 
     private void retrieveId (String currentLine, Matcher patternMatcher) throws IOException {
@@ -82,7 +82,7 @@ public class LocalizeParser {
     }
 
     private void parseEndOfMultilineString(String currentLine) {
-        String currentString = "";
+        //String currentString = "";
         if (currentLine.endsWith("\";")) {
             currentLine = currentLine.substring(0, currentLine.length() - 2);
             currentString = currentString + "\n" + currentLine;
