@@ -8,9 +8,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
@@ -20,7 +19,7 @@ import me.nickp0is0n.easylocalize.utils.LocalizeParser
 import java.awt.FileDialog
 
 class MainWindowView {
-    private lateinit var stringList: MutableList<LocalizedString>
+    private lateinit var stringList: SnapshotStateList<LocalizedString>
     private lateinit var fieldValuesModel: FieldValuesViewModel
     private var selectedID = -1
     private val controller = MainWindowController()
@@ -33,7 +32,8 @@ class MainWindowView {
                 stringFieldValue = remember { mutableStateOf("Select an ID") },
                 commentFieldValue = remember { mutableStateOf("Select an ID") }
             )
-            stringList = retrieveStringList() as MutableList<LocalizedString>
+            val originalList = retrieveStringList()
+            stringList = remember { mutableStateListOf(*originalList.toTypedArray()) }
             StringList(stringList)
             Column {
                 StringTextField()
