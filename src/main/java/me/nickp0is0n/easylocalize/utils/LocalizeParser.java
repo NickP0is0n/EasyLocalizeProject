@@ -24,10 +24,6 @@ public class LocalizeParser {
         //boolean isCurrentCommentMultilined = false;
 
         while ((currentLine=reader.readLine())!=null) {
-            if (currentLine.equals("")) {
-                continue;
-            }
-
             if (isAComment(currentLine)) {
                 currentComment = currentComment + parseComment(currentLine);
             }
@@ -36,7 +32,7 @@ public class LocalizeParser {
                 parseEndOfMultilineString(currentLine);
             }
 
-            else {
+            else if (!currentLine.equals("") || multilineCommentMode) {
                 Pattern wrappedStringPattern = Pattern.compile("([\"])(?:(?=(\\\\?))\\2.)*?\\1");
                 Matcher patternMatcher = wrappedStringPattern.matcher(currentLine);
 
