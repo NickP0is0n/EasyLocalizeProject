@@ -18,6 +18,7 @@ repositories {
 
 dependencies {
     implementation(compose.desktop.currentOs)
+    implementation("org.junit.jupiter:junit-jupiter:5.7.0")
 }
 
 tasks.withType<KotlinCompile>() {
@@ -33,4 +34,8 @@ compose.desktop {
             packageVersion = "1.0.0"
         }
     }
+}
+
+tasks.test {
+    useJUnitPlatform()
 }

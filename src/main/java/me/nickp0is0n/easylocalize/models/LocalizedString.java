@@ -35,7 +35,7 @@ public class LocalizedString {
                 .append(id)
                 .append("\" = \"")
                 .append(text)
-                .append("\"");
+                .append("\";");
         return rawLocalizedStringBuilder.toString();
     }
 
