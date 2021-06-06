@@ -4,7 +4,7 @@ import androidx.compose.ui.unit.IntSize
 import me.nickp0is0n.easylocalize.ui.MainWindowView
 
 fun main() = Window (
-    title = "EasyLocalize 0.0.5 alpha",
+    title = "EasyLocalize 0.0.6 alpha",
     resizable = false,
     size = IntSize(780, 455)
 ) {

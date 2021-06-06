@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Notifier
 import me.nickp0is0n.easylocalize.models.LocalizedString
 import me.nickp0is0n.easylocalize.utils.LocalizeParser
 import java.awt.FileDialog
@@ -41,6 +42,8 @@ class MainWindowView {
                 Button (
                     onClick = {
                         controller.onExportButtonClick(stringList, window)
+                        val notifier = Notifier()
+                        notifier.notify("Success", "Localization file has been successfully exported.")
                     },
                     colors = ButtonDefaults.buttonColors(backgroundColor = Color(30, 144, 255)),
                     modifier = Modifier.padding(top = 10.dp)
@@ -144,23 +147,5 @@ class MainWindowView {
         openDialog.isVisible = true
         val stringFile = openDialog.files[0]
         return parser.fromFile(stringFile)
-    }
-
-    @Composable
-    private fun showExportSuccessAlert() {
-        AlertDialog(
-            title = {
-                Text("Success")
-            },
-            text = {
-                Text("Translation file successfully exported!")
-            },
-            onDismissRequest = {},
-            confirmButton = {
-                Button(onClick = {}) {
-                    Text("OK")
-                }
-            }
-        )
     }
 }

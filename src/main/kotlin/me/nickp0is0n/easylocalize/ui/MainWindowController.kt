@@ -1,14 +1,9 @@
 package me.nickp0is0n.easylocalize.ui
 
 import androidx.compose.desktop.AppWindow
-import androidx.compose.desktop.LocalAppWindow
-import androidx.compose.material.AlertDialog
-import androidx.compose.material.Button
-import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.ui.window.Notifier
 import me.nickp0is0n.easylocalize.models.LocalizedString
 import me.nickp0is0n.easylocalize.utils.LocalizeExporter
-import me.nickp0is0n.easylocalize.utils.LocalizeParser
 import java.awt.FileDialog
 
 class MainWindowController {

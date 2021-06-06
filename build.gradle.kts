@@ -8,7 +8,7 @@ plugins {
 }
 
 group = "me.nickp0is0n"
-version = "0.1"
+version = "0.0.6"
 
 repositories {
     jcenter()
@@ -31,7 +31,13 @@ compose.desktop {
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
             packageName = "EasyLocalize"
-            packageVersion = "1.0.0"
+            packageVersion = "1.0.6"
+            copyright = "Copyright (c) 2021, Mykola Chaikovskyi"
+            macOS {
+                bundleID = "me.nickp0is0n.easylocalize"
+                dockName = "EasyLocalize"
+                iconFile.set(project.file("easylocalize_logo.icns"))
+            }
         }
     }
 }
