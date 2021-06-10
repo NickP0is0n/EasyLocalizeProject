@@ -2,6 +2,7 @@ package me.nickp0is0n.easylocalize.ui
 
 import androidx.compose.desktop.LocalAppWindow
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -63,7 +64,8 @@ class MainWindowView {
                 modifier = Modifier.padding(top = 10.dp, start = 10.dp)
             )
             LazyColumn (
-                modifier = Modifier.padding(top = 10.dp)
+                modifier = Modifier
+                    .padding(top = 10.dp)
             ) {
                 items(strings) {
                     StringItem(it)
@@ -77,7 +79,8 @@ class MainWindowView {
         Button(
             modifier = Modifier
                 .padding(start = 10.dp, top = 0.dp, end = 10.dp, bottom = 0.dp)
-                .size(width = 300.dp, height = 50.dp),
+                .size(width = 300.dp, height = 50.dp)
+                .border(width = 1.dp, Color(245, 245, 245)),
             colors = ButtonDefaults.buttonColors(backgroundColor = Color.White),
             shape = RectangleShape,
             onClick = {
