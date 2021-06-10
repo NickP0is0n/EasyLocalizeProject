@@ -1,10 +1,8 @@
 package me.nickp0is0n.easylocalize.ui
 
 import androidx.compose.desktop.LocalAppWindow
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
@@ -28,6 +26,9 @@ class MainWindowView {
     @Composable
     fun MainUI() {
         val window = LocalAppWindow.current
+        Box(modifier = Modifier
+            .background(color = Color(250, 250, 250))
+            .fillMaxSize())
         Row {
             fieldValuesModel = FieldValuesViewModel(
                 stringFieldValue = remember { mutableStateOf("Select an ID") },
