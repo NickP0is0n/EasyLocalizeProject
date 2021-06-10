@@ -20,12 +20,14 @@ public class LocalizeParser {
     public List<LocalizedString> fromFile(File file) throws IOException {
         BufferedReader reader = new BufferedReader(new FileReader(file));
         String currentLine;
-
-        //boolean isCurrentCommentMultilined = false;
+        boolean isCommentMultilined = false;
 
         while ((currentLine=reader.readLine())!=null) {
             if (isAComment(currentLine)) {
                 currentComment = currentComment + parseComment(currentLine);
+                if (multilineCommentMode) {
+                    isCommentMultilined = true;
+                }
             }
 
             else if (isLineBelongToUnfinishedString(currentLine, currentString)) {
@@ -39,15 +41,16 @@ public class LocalizeParser {
                 retrieveId(currentLine, patternMatcher);
                 retrieveTextString(currentLine, patternMatcher);
 
-                finalizeLocalizedString(currentLine);
+                finalizeLocalizedString(currentLine, isCommentMultilined);
+                isCommentMultilined = false;
             }
         }
         return strings;
     }
 
-    private void finalizeLocalizedString(String currentLine) {
+    private void finalizeLocalizedString(String currentLine, boolean isCommentMultilined) {
         if (currentLine.endsWith("\";")) {
-            strings.add(new LocalizedString(currentId, currentString, currentComment));
+            strings.add(new LocalizedString(currentId, currentString, currentComment, isCommentMultilined));
             currentComment = "";
         }
     }

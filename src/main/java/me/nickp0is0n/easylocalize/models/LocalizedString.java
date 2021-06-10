@@ -1,5 +1,9 @@
 package me.nickp0is0n.easylocalize.models;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 public class LocalizedString {
     private final String id;
     private final String text;
@@ -24,11 +28,22 @@ public class LocalizedString {
     public String toString() {
         StringBuilder rawLocalizedStringBuilder = new StringBuilder();
         if (!comment.isEmpty()) {
-            rawLocalizedStringBuilder
-                    .append("/* ")
-                    .append(comment.trim())
-                    .append(" */")
-                    .append("\n");
+            if (isCommentMultilined) {
+                rawLocalizedStringBuilder
+                        .append("/*")
+                        .append(comment.trim())
+                        .append("*/")
+                        .append("\n");
+            }
+            else {
+                List<String> commentStrings = Arrays.asList(comment.split("\n"));
+                commentStrings.forEach(it -> {
+                    rawLocalizedStringBuilder
+                            .append("//")
+                            .append(it)
+                            .append("\n");
+                });
+            }
         }
         rawLocalizedStringBuilder
                 .append("\"")
