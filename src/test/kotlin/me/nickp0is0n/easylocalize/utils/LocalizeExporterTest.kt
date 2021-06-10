@@ -46,7 +46,7 @@ class LocalizeExporterTest {
     fun writeBasicStringWithMultilineComment() {
         val expectedReader = FileReader(File(this.javaClass.classLoader.getResource("exporter/withMultilineComment").toURI()))
         val actualReader = FileReader(tempFile)
-        exporter.toFile(listOf(LocalizedString("CONTINUE-ERASE", "Continue and Erase", "Sample\ncomment")), tempFile)
+        exporter.toFile(listOf(LocalizedString("CONTINUE-ERASE", "Continue and Erase", "Sample\ncomment", true)), tempFile)
         assertEquals(expectedReader.readText(), actualReader.readText())
     }
 
