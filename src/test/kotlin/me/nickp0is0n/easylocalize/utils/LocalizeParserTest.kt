@@ -83,6 +83,6 @@ class LocalizeParserTest {
         val result = parser.fromFile(File(this.javaClass.classLoader.getResource("parser/withMark").toURI()))
         assertEquals(result[0].id, "CONTINUE-ERASE")
         assertEquals(result[0].text, "Continue and Erase")
-        assertEquals(result[0].mark, "Test mark")
+        assertEquals(result[0].mark, " Test mark")
     }
 }

@@ -12,7 +12,7 @@ class LocalizeExporter {
             localizedStrings.forEach {
                 if (it.mark != lastMark && it.mark != null) {
                     lastMark = it.mark
-                    writer.println("\n//MARK: ${it.mark}\n")
+                    writer.println("\n// MARK:${it.mark}\n")
                 }
                 writer.println(it)
             }
