@@ -98,7 +98,7 @@ public class LocalizeParser {
         String currentComment = "";
         if (currentLine.startsWith("//")) {
             if (currentLine.contains("MARK:")) {
-                currentMark = currentLine.substring(6);
+                currentMark = currentLine.substring(8);
                 return currentComment;
             }
             currentComment = currentComment + currentLine.substring(2) + "\n";

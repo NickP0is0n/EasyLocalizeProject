@@ -1,6 +1,5 @@
 package me.nickp0is0n.easylocalize.models;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -25,14 +24,6 @@ public class LocalizedString {
         this.comment = comment;
         this.mark = null;
         this.isCommentMultilined = isCommentMultilined;
-    }
-
-    public LocalizedString(String id, String text, String comment, String mark) {
-        this.id = id;
-        this.text = text;
-        this.comment = comment;
-        this.mark = mark;
-        this.isCommentMultilined = false;
     }
 
     public LocalizedString(String id, String text, String comment, String mark, boolean isCommentMultilined) {
@@ -83,5 +74,9 @@ public class LocalizedString {
 
     public String getComment() {
         return comment;
+    }
+
+    public String getMark() {
+        return mark;
     }
 }
