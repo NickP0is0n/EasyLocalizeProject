@@ -7,9 +7,14 @@ import java.io.PrintWriter
 class LocalizeExporter {
     fun toFile(localizedStrings: List<LocalizedString>, outputFile: File) {
         val writer = PrintWriter(outputFile)
+        var lastMark: String? = null
         writer.use {
             localizedStrings.forEach {
-                writer.println("$it\n")
+                if (it.mark != lastMark && it.mark != null) {
+                    lastMark = it.mark
+                    writer.println("\n//MARK: ${it.mark}\n")
+                }
+                writer.println(it)
             }
         }
     }
