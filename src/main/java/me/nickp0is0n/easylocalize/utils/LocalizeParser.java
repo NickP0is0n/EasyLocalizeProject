@@ -14,6 +14,7 @@ public class LocalizeParser {
     private String currentId = null;
     private String currentString = null;
     private boolean multilineCommentMode = false;
+    private String currentMark = null;
 
     private final ArrayList<LocalizedString> strings = new ArrayList<>();
 
@@ -50,7 +51,7 @@ public class LocalizeParser {
 
     private void finalizeLocalizedString(String currentLine, boolean isCommentMultilined) {
         if (currentLine.endsWith("\";")) {
-            strings.add(new LocalizedString(currentId, currentString, currentComment, isCommentMultilined));
+            strings.add(new LocalizedString(currentId, currentString, currentComment, currentMark, isCommentMultilined));
             currentComment = "";
         }
     }
@@ -96,7 +97,10 @@ public class LocalizeParser {
     private String parseComment(String currentLine) {
         String currentComment = "";
         if (currentLine.startsWith("//")) {
-            if (currentLine.contains("MARK:")) return currentComment; //TODO: Group strings by Mark
+            if (currentLine.contains("MARK:")) {
+                currentMark = currentLine.substring(6);
+                return currentComment;
+            }
             currentComment = currentComment + currentLine.substring(2) + "\n";
             return currentComment;
         }
