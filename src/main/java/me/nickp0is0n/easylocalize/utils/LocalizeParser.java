@@ -51,7 +51,7 @@ public class LocalizeParser {
 
     private void finalizeLocalizedString(String currentLine, boolean isCommentMultilined) {
         if (currentLine.endsWith("\";")) {
-            strings.add(new LocalizedString(currentId, currentString, currentComment, currentMark, isCommentMultilined));
+            strings.add(new LocalizedString(currentId, currentString, currentComment, isCommentMultilined, currentMark));
             currentComment = "";
         }
     }
