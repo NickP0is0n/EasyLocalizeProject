@@ -13,15 +13,17 @@ class LocalizeExporter {
         writer.use {
             localizedStrings.forEach {
                 if (isFirstString && it.isCommentMultilined) {
-                    writer.println("/*\n${it.comment}\n*/") // writing xcode copyright header on top
+                    writer.println("/*${it.comment}*/") // writing xcode copyright header on top
+                }
+                if (it.mark != lastMark && it.mark != null) {
+                    lastMark = it.mark
+                    writer.println("\n// MARK:${it.mark}\n")
+                }
+                if (isFirstString) {
                     writer.println(it.toStringWithoutComment())
                     isFirstString = false
                 }
                 else {
-                    if (it.mark != lastMark && it.mark != null) {
-                        lastMark = it.mark
-                        writer.println("\n// MARK:${it.mark}\n")
-                    }
                     writer.println(it)
                 }
             }
