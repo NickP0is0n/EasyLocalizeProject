@@ -15,6 +15,7 @@ public class LocalizeParser {
     private String currentString = null;
     private boolean multilineCommentMode = false;
     private String currentMark = null;
+    private String header = null;
 
     private final ArrayList<LocalizedString> strings = new ArrayList<>();
 

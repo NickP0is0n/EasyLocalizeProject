@@ -35,4 +35,15 @@ data class LocalizedString @JvmOverloads constructor(
             .append("\";")
         return rawLocalizedStringBuilder.toString()
     }
+
+    fun toStringWithoutComment(): String {
+        val rawLocalizedStringBuilder = StringBuilder()
+        rawLocalizedStringBuilder
+            .append("\"")
+            .append(id)
+            .append("\" = \"")
+            .append(text)
+            .append("\";")
+        return rawLocalizedStringBuilder.toString()
+    }
 }

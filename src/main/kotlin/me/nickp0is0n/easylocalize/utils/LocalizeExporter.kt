@@ -8,13 +8,22 @@ class LocalizeExporter {
     fun toFile(localizedStrings: List<LocalizedString>, outputFile: File) {
         val writer = PrintWriter(outputFile)
         var lastMark: String? = null
+        var isFirstString = true
+
         writer.use {
             localizedStrings.forEach {
-                if (it.mark != lastMark && it.mark != null) {
-                    lastMark = it.mark
-                    writer.println("\n// MARK:${it.mark}\n")
+                if (isFirstString && it.isCommentMultilined) {
+                    writer.println("/*\n${it.comment}\n*/") // writing xcode copyright header on top
+                    writer.println(it.toStringWithoutComment())
+                    isFirstString = false
                 }
-                writer.println(it)
+                else {
+                    if (it.mark != lastMark && it.mark != null) {
+                        lastMark = it.mark
+                        writer.println("\n// MARK:${it.mark}\n")
+                    }
+                    writer.println(it)
+                }
             }
         }
     }
