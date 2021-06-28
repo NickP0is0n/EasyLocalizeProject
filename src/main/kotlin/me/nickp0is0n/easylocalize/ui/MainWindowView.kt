@@ -1,6 +1,7 @@
 package me.nickp0is0n.easylocalize.ui
 
 import androidx.compose.desktop.LocalAppWindow
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
@@ -12,6 +13,7 @@ import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Notifier
 import me.nickp0is0n.easylocalize.models.LocalizedString
@@ -56,6 +58,7 @@ class MainWindowView {
         }
     }
 
+    @OptIn(ExperimentalFoundationApi::class)
     @Composable
     private fun StringList(strings: List<LocalizedString>) {
         Column {
@@ -68,8 +71,19 @@ class MainWindowView {
                     .padding(start = 10.dp, top = 10.dp, end = 10.dp, bottom = 8.dp)
                     .border(width = 2.dp, Color(245, 245, 245))
             ) {
-                items(strings) {
-                    StringItem(it)
+                val groupedByMark = strings.groupBy {
+                    it.mark
+                }
+                groupedByMark.forEach { (mark, strings) ->
+                    if (mark != null) {
+                        stickyHeader {
+                            StringMarkHeader(mark)
+                        }
+                    }
+
+                    items(strings) {
+                        StringItem(it)
+                    }
                 }
             }
         }
@@ -108,7 +122,8 @@ class MainWindowView {
                         this@MainWindowView.stringList[selectedID] = LocalizedString(
                             currentString.id,
                             it,
-                            currentString.comment
+                            currentString.comment,
+                            mark = currentString.mark
                         )
                     }
                 } },
@@ -133,7 +148,8 @@ class MainWindowView {
                         this@MainWindowView.stringList[selectedID] = LocalizedString(
                             currentString.id,
                             currentString.text,
-                            it
+                            it,
+                            mark = currentString.mark
                         )
                     }
                 } },
@@ -141,6 +157,19 @@ class MainWindowView {
                     .padding(top = 0.dp)
                     .size(width = 450.dp, height = 160.dp))
         }
+    }
+
+    @Composable
+    private fun StringMarkHeader(text: String) {
+        Text(
+            text = text,
+            color = Color(30, 144, 255),
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier
+                .background(Color(242, 245, 251))
+                .padding(8.dp)
+                .width(284.dp)
+        )
     }
 
     @Composable
