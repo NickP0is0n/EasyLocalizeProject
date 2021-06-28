@@ -28,7 +28,7 @@ class MainWindowView {
     fun MainUI() {
         val window = LocalAppWindow.current
         Box(modifier = Modifier
-            .background(color = Color(250, 250, 250))
+            .background(color = Color(255, 255, 255))
             .fillMaxSize())
         Row {
             fieldValuesModel = FieldValuesViewModel(
@@ -65,7 +65,8 @@ class MainWindowView {
             )
             LazyColumn (
                 modifier = Modifier
-                    .padding(top = 10.dp)
+                    .padding(start = 10.dp, top = 10.dp, end = 10.dp, bottom = 8.dp)
+                    .border(width = 2.dp, Color(245, 245, 245))
             ) {
                 items(strings) {
                     StringItem(it)
@@ -78,7 +79,6 @@ class MainWindowView {
     private fun StringItem(item: LocalizedString) {
         Button(
             modifier = Modifier
-                .padding(start = 10.dp, top = 0.dp, end = 10.dp, bottom = 0.dp)
                 .size(width = 300.dp, height = 50.dp)
                 .border(width = 1.dp, Color(245, 245, 245)),
             colors = ButtonDefaults.buttonColors(backgroundColor = Color.White),
@@ -100,7 +100,7 @@ class MainWindowView {
                 text = "String",
                 modifier = Modifier.padding(top = 10.dp)
             )
-            TextField (value = fieldValuesModel.stringFieldValue.value,
+            OutlinedTextField (value = fieldValuesModel.stringFieldValue.value,
                 onValueChange = { run {
                     fieldValuesModel.stringFieldValue.value = it
                     if (selectedID != -1) {
@@ -113,8 +113,8 @@ class MainWindowView {
                     }
                 } },
                 modifier = Modifier
-                    .padding(top = 10.dp)
-                    .size(width = 450.dp, height = 150.dp))
+                    .padding(top = 0.dp)
+                    .size(width = 450.dp, height = 160.dp))
         }
     }
 
@@ -125,7 +125,7 @@ class MainWindowView {
                 text = "Comment",
                 modifier = Modifier.padding(top = 10.dp)
             )
-            TextField (value = fieldValuesModel.commentFieldValue.value,
+            OutlinedTextField (value = fieldValuesModel.commentFieldValue.value,
                 onValueChange = { run {
                     fieldValuesModel.commentFieldValue.value = it
                     if (selectedID != -1) {
@@ -138,8 +138,8 @@ class MainWindowView {
                     }
                 } },
                 modifier = Modifier
-                    .padding(top = 10.dp)
-                    .size(width = 450.dp, height = 150.dp))
+                    .padding(top = 0.dp)
+                    .size(width = 450.dp, height = 160.dp))
         }
     }
 
