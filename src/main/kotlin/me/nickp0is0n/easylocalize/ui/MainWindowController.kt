@@ -7,6 +7,7 @@ import me.nickp0is0n.easylocalize.utils.LocalizeExporter
 import java.awt.FileDialog
 
 class MainWindowController {
+    var exportedSuccessfully = false
     fun onExportButtonClick(content: List<LocalizedString>, window: AppWindow) {
         val exporter = LocalizeExporter()
 
@@ -14,10 +15,19 @@ class MainWindowController {
         openDialog.mode = FileDialog.SAVE
         openDialog.isVisible = true
 
-        val exportFile = openDialog.files[0]
-        if (!exportFile.exists()) {
-            exportFile.createNewFile()
+        val exportFile = try {
+            openDialog.files[0]
         }
-        exporter.toFile(content, exportFile)
+        catch (e: ArrayIndexOutOfBoundsException) {
+            null
+        }
+
+        if (exportFile != null) {
+            if (!exportFile.exists()) {
+                exportFile.createNewFile()
+            }
+            exporter.toFile(content, exportFile)
+            exportedSuccessfully = true
+        }
     }
 }

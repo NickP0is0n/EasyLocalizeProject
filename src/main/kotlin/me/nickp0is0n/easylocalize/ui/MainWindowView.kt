@@ -46,8 +46,11 @@ class MainWindowView {
                 Button (
                     onClick = {
                         controller.onExportButtonClick(stringList, window)
-                        val notifier = Notifier()
-                        notifier.notify("Success", "Localization file has been successfully exported.")
+                        if (controller.exportedSuccessfully) {
+                            val notifier = Notifier()
+                            notifier.notify("Success", "Localization file has been successfully exported.")
+                            controller.exportedSuccessfully = false // resets the value
+                        }
                     },
                     colors = ButtonDefaults.buttonColors(backgroundColor = Color(30, 144, 255)),
                     modifier = Modifier.padding(top = 10.dp)
