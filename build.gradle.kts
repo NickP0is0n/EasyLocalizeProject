@@ -8,7 +8,7 @@ plugins {
 }
 
 group = "me.nickp0is0n"
-version = "0.0.11"
+version = "0.0.12"
 
 repositories {
     jcenter()
@@ -31,7 +31,7 @@ compose.desktop {
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
             packageName = "EasyLocalize"
-            packageVersion = "1.0.11"
+            packageVersion = "1.0.12"
             copyright = "Copyright (c) 2021, Mykola Chaikovskyi"
             macOS {
                 bundleID = "me.nickp0is0n.easylocalize"
