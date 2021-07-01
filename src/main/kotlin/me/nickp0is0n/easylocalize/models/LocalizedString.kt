@@ -6,7 +6,8 @@ data class LocalizedString @JvmOverloads constructor(
     val text: String,
     val comment: String,
     val isCommentMultilined: Boolean = false,
-    val mark: String? = null
+    val mark: String? = null,
+    val copyrightHeader: String? = null
 ) {
     override fun toString(): String {
         val rawLocalizedStringBuilder = StringBuilder()

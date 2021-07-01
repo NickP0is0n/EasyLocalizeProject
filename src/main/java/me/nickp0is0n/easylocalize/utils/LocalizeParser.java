@@ -22,17 +22,34 @@ public class LocalizeParser {
         BufferedReader reader = new BufferedReader(new FileReader(file));
         String currentLine;
         boolean isCommentMultilined = false;
+        boolean isHeaderAlreadyExist = false;
+        String header = "";
 
         while ((currentLine=reader.readLine())!=null) {
             if (isAComment(currentLine)) {
                 currentComment = currentComment + parseComment(currentLine);
+                if (strings.isEmpty() && !multilineCommentMode && !isCommentMultilined) {
+                    isHeaderAlreadyExist = true;
+                }
                 if (multilineCommentMode) {
                     isCommentMultilined = true;
+                }
+                else if (!currentComment.isEmpty() && strings.isEmpty() && !isHeaderAlreadyExist){
+                    header = currentComment;
+                    currentComment = "";
+                    isHeaderAlreadyExist = true;
+                    isCommentMultilined = false;
                 }
             }
 
             else if (isLineBelongToUnfinishedString(currentLine, currentString)) {
                 parseEndOfMultilineString(currentLine);
+                if (!header.isEmpty()) {
+                    LocalizedString current = strings.get(strings.size() - 1);
+                    strings.set(strings.size() - 1, new LocalizedString(current.getId(), current.getText(), current.getComment(), current.isCommentMultilined(), current.getMark(), header));
+                    header = "";
+                }
+
             }
 
             else if (!currentLine.equals("") || multilineCommentMode) {
@@ -43,6 +60,11 @@ public class LocalizeParser {
                 retrieveTextString(currentLine, patternMatcher);
 
                 finalizeLocalizedString(currentLine, isCommentMultilined);
+                if (!header.isEmpty()) {
+                    LocalizedString current = strings.get(strings.size() - 1);
+                    strings.set(strings.size() - 1, new LocalizedString(current.getId(), current.getText(), current.getComment(), current.isCommentMultilined(), current.getMark(), header));
+                    header = "";
+                }
                 isCommentMultilined = false;
             }
         }

@@ -123,7 +123,8 @@ class MainWindowView {
                             currentString.id,
                             it,
                             currentString.comment,
-                            mark = currentString.mark
+                            mark = currentString.mark,
+                            copyrightHeader = currentString.copyrightHeader
                         )
                     }
                 } },
@@ -149,7 +150,8 @@ class MainWindowView {
                             currentString.id,
                             currentString.text,
                             it,
-                            mark = currentString.mark
+                            mark = currentString.mark,
+                            copyrightHeader = currentString.copyrightHeader
                         )
                     }
                 } },
