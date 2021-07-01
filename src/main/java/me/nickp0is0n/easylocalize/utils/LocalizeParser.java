@@ -15,6 +15,7 @@ public class LocalizeParser {
     private String currentString = null;
     private boolean multilineCommentMode = false;
     private String currentMark = null;
+    private String header = null;
 
     private final ArrayList<LocalizedString> strings = new ArrayList<>();
 
@@ -23,7 +24,6 @@ public class LocalizeParser {
         String currentLine;
         boolean isCommentMultilined = false;
         boolean isHeaderAlreadyExist = false;
-        String header = "";
 
         while ((currentLine=reader.readLine())!=null) {
             if (isAComment(currentLine)) {
@@ -43,13 +43,7 @@ public class LocalizeParser {
             }
 
             else if (isLineBelongToUnfinishedString(currentLine, currentString)) {
-                parseEndOfMultilineString(currentLine);
-                if (!header.isEmpty()) {
-                    LocalizedString current = strings.get(strings.size() - 1);
-                    strings.set(strings.size() - 1, new LocalizedString(current.getId(), current.getText(), current.getComment(), current.isCommentMultilined(), current.getMark(), header));
-                    header = "";
-                }
-
+                parseEndOfMultilineString(currentLine, isCommentMultilined);
             }
 
             else if (!currentLine.equals("") || multilineCommentMode) {
@@ -60,11 +54,6 @@ public class LocalizeParser {
                 retrieveTextString(currentLine, patternMatcher);
 
                 finalizeLocalizedString(currentLine, isCommentMultilined);
-                if (!header.isEmpty()) {
-                    LocalizedString current = strings.get(strings.size() - 1);
-                    strings.set(strings.size() - 1, new LocalizedString(current.getId(), current.getText(), current.getComment(), current.isCommentMultilined(), current.getMark(), header));
-                    header = "";
-                }
                 isCommentMultilined = false;
             }
         }
@@ -73,8 +62,9 @@ public class LocalizeParser {
 
     private void finalizeLocalizedString(String currentLine, boolean isCommentMultilined) {
         if (currentLine.endsWith("\";")) {
-            strings.add(new LocalizedString(currentId, currentString, currentComment, isCommentMultilined, currentMark));
+            strings.add(new LocalizedString(currentId, currentString, currentComment, isCommentMultilined, currentMark, header));
             currentComment = "";
+            header = null;
         }
     }
 
@@ -103,13 +93,14 @@ public class LocalizeParser {
         }
     }
 
-    private void parseEndOfMultilineString(String currentLine) {
+    private void parseEndOfMultilineString(String currentLine, boolean isCommentMultilined) {
         //String currentString = "";
         if (currentLine.endsWith("\";")) {
             currentLine = currentLine.substring(0, currentLine.length() - 2);
             currentString = currentString + "\n" + currentLine;
-            strings.add(new LocalizedString(currentId, currentString, currentComment));
+            strings.add(new LocalizedString(currentId, currentString, currentComment, isCommentMultilined, currentMark, header));
             currentComment = "";
+            header = null;
         }
         else {
             currentString = currentString + "\n" + currentLine;
