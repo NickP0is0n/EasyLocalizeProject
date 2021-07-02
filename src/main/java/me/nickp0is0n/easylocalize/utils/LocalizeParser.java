@@ -114,7 +114,7 @@ public class LocalizeParser {
                 currentMark = currentLine.substring(8);
                 return currentComment;
             }
-            currentComment = currentComment + currentLine.substring(2) + "\n";
+            currentComment = (currentComment + currentLine.substring(2) + "\n").trim();
             return currentComment;
         }
         if (currentLine.startsWith("/*")) {

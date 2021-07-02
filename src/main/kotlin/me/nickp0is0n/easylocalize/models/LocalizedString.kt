@@ -21,12 +21,10 @@ data class LocalizedString @JvmOverloads constructor(
             } else {
                 val commentStrings = listOf(*comment.split("\n").toTypedArray())
                 commentStrings.forEach {
-                    if(it.isNotEmpty()) {
-                        rawLocalizedStringBuilder
-                            .append("//")
-                            .append(it)
-                            .append("\n")
-                    }
+                    rawLocalizedStringBuilder
+                        .append("//")
+                        .append(it)
+                        .append("\n")
                 }
             }
         }
