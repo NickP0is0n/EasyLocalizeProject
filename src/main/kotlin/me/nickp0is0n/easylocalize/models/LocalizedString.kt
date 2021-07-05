@@ -22,7 +22,7 @@ data class LocalizedString @JvmOverloads constructor(
                 val commentStrings = listOf(*comment.split("\n").toTypedArray())
                 commentStrings.forEach {
                     rawLocalizedStringBuilder
-                        .append("//")
+                        .append("// ")
                         .append(it)
                         .append("\n")
                 }
