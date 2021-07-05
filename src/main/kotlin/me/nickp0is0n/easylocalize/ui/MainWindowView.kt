@@ -13,9 +13,10 @@ import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Notifier
+import androidx.compose.ui.window.*
 import me.nickp0is0n.easylocalize.models.LocalizedString
 import me.nickp0is0n.easylocalize.utils.LocalizeParser
 import java.awt.FileDialog
@@ -25,10 +26,15 @@ class MainWindowView {
     private lateinit var fieldValuesModel: FieldValuesViewModel
     private var selectedID = -1
     private val controller = MainWindowController()
+    private val waitForFile = mutableStateOf(false)
 
     @Composable
     fun MainUI() {
         val window = LocalAppWindow.current
+        window.setMenuBar(
+            AppMenuBar()
+        )
+
         Box(modifier = Modifier
             .background(color = Color(255, 255, 255))
             .fillMaxSize())
@@ -58,6 +64,7 @@ class MainWindowView {
                     Text(text ="Export translations to file...", color = Color.White)
                 }
             }
+            checkIfOpenButtonClicked()
         }
     }
 
@@ -184,6 +191,34 @@ class MainWindowView {
         val openDialog = FileDialog(window.window)
         openDialog.isVisible = true
         val stringFile = openDialog.files[0]
+        waitForFile.value = false
         return parser.fromFile(stringFile)
     }
+
+    @Composable
+    private fun checkIfOpenButtonClicked() {
+        if (waitForFile.value) {
+            val newList = retrieveStringList()
+            if (newList.isNotEmpty()) {
+                stringList.clear()
+                newList.forEach { stringList.add(it) }
+            }
+            //println("called")
+        }
+    }
+
+    @Composable
+    private fun AppMenuBar(): MenuBar =
+        MenuBar(
+            Menu(
+                name = "File",
+                MenuItem(
+                    name = "Open...",
+                    onClick = {
+                        waitForFile.value = true
+                    },
+                    shortcut = KeyStroke(Key.O)
+                )
+            )
+        )
 }

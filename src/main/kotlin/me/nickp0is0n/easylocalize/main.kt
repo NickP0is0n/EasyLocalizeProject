@@ -8,6 +8,7 @@ fun main() = Window (
     resizable = false,
     size = IntSize(780, 455)
 ) {
+    System.setProperty("apple.laf.useScreenMenuBar", "true")
     val currentView = MainWindowView()
     MaterialTheme {
         currentView.MainUI()
