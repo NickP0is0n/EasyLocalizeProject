@@ -8,7 +8,10 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -20,7 +23,6 @@ import androidx.compose.ui.window.*
 import me.nickp0is0n.easylocalize.models.LocalizedString
 import me.nickp0is0n.easylocalize.utils.LocalizeParser
 import java.awt.FileDialog
-import kotlin.system.exitProcess
 
 class MainWindowView {
     private lateinit var stringList: SnapshotStateList<LocalizedString>
@@ -28,7 +30,6 @@ class MainWindowView {
     private var selectedID = -1
     private val controller = MainWindowController()
     private val waitForFile = mutableStateOf(false)
-    private val openAlert = mutableStateOf(false)
 
     @Composable
     fun MainUI() {
@@ -195,8 +196,6 @@ class MainWindowView {
         val openDialog = FileDialog(window.window)
         openDialog.isVisible = true
         if (openDialog.files.isEmpty()) {
-            openAlert.value = true
-            UnableToReadFileAlert()
             return listOf(LocalizedString("No file loaded", "", ""))
         }
         val stringFile = openDialog.files[0]
@@ -238,31 +237,6 @@ class MainWindowView {
             fieldValuesModel.stringFieldValue.value = stringList[0].text
             fieldValuesModel.commentFieldValue.value = stringList[0].comment
             selectedID = 0
-        }
-    }
-
-    @Composable
-    private fun UnableToReadFileAlert() {
-        if (openAlert.value) {
-            AlertDialog(
-                onDismissRequest = {
-
-                },
-                title = {
-                    Text("Error")
-                },
-                text = {
-                    Text("EasyLocalize was unable to read the file.")
-                },
-                confirmButton = {
-                    Button(
-                        onClick = {
-                            openAlert.value = false
-                        }
-                    ) {
-                        Text("Confirm")
-                    }
-                })
         }
     }
 }
