@@ -20,6 +20,7 @@ import androidx.compose.ui.window.*
 import me.nickp0is0n.easylocalize.models.LocalizedString
 import me.nickp0is0n.easylocalize.utils.LocalizeParser
 import java.awt.FileDialog
+import kotlin.system.exitProcess
 
 class MainWindowView {
     private lateinit var stringList: SnapshotStateList<LocalizedString>
@@ -27,6 +28,7 @@ class MainWindowView {
     private var selectedID = -1
     private val controller = MainWindowController()
     private val waitForFile = mutableStateOf(false)
+    private val openAlert = mutableStateOf(false)
 
     @Composable
     fun MainUI() {
@@ -43,6 +45,7 @@ class MainWindowView {
                 stringFieldValue = remember { mutableStateOf("Select an ID") },
                 commentFieldValue = remember { mutableStateOf("Select an ID") }
             )
+
             val originalList = retrieveStringList()
             stringList = remember { mutableStateListOf(*originalList.toTypedArray()) }
             StringList(stringList)
@@ -191,6 +194,11 @@ class MainWindowView {
         val window = LocalAppWindow.current
         val openDialog = FileDialog(window.window)
         openDialog.isVisible = true
+        if (openDialog.files.isEmpty()) {
+            openAlert.value = true
+            UnableToReadFileAlert()
+            return listOf(LocalizedString("No file loaded", "", ""))
+        }
         val stringFile = openDialog.files[0]
         waitForFile.value = false
         return parser.fromFile(stringFile)
@@ -226,8 +234,35 @@ class MainWindowView {
 
     @Composable
     private fun setTextFieldDefaultValues() {
-        fieldValuesModel.stringFieldValue.value = stringList[0].text
-        fieldValuesModel.commentFieldValue.value = stringList[0].comment
-        selectedID = 0
+        if (stringList.isNotEmpty()) {
+            fieldValuesModel.stringFieldValue.value = stringList[0].text
+            fieldValuesModel.commentFieldValue.value = stringList[0].comment
+            selectedID = 0
+        }
+    }
+
+    @Composable
+    private fun UnableToReadFileAlert() {
+        if (openAlert.value) {
+            AlertDialog(
+                onDismissRequest = {
+
+                },
+                title = {
+                    Text("Error")
+                },
+                text = {
+                    Text("EasyLocalize was unable to read the file.")
+                },
+                confirmButton = {
+                    Button(
+                        onClick = {
+                            openAlert.value = false
+                        }
+                    ) {
+                        Text("Confirm")
+                    }
+                })
+        }
     }
 }
