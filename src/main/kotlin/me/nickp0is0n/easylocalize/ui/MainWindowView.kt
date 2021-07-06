@@ -46,6 +46,7 @@ class MainWindowView {
             val originalList = retrieveStringList()
             stringList = remember { mutableStateListOf(*originalList.toTypedArray()) }
             StringList(stringList)
+            setTextFieldDefaultValues()
             Column {
                 StringTextField()
                 CommentTextField()
@@ -202,6 +203,7 @@ class MainWindowView {
             if (newList.isNotEmpty()) {
                 stringList.clear()
                 newList.forEach { stringList.add(it) }
+                setTextFieldDefaultValues()
             }
             //println("called")
         }
@@ -221,4 +223,11 @@ class MainWindowView {
                 )
             )
         )
+
+    @Composable
+    private fun setTextFieldDefaultValues() {
+        fieldValuesModel.stringFieldValue.value = stringList[0].text
+        fieldValuesModel.commentFieldValue.value = stringList[0].comment
+        selectedID = 0
+    }
 }
