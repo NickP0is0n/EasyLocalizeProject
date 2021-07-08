@@ -1,5 +1,6 @@
 package me.nickp0is0n.easylocalize.models
 
+import java.io.Serializable
 
 data class LocalizedString @JvmOverloads constructor(
     val id: String,
@@ -8,7 +9,11 @@ data class LocalizedString @JvmOverloads constructor(
     val isCommentMultilined: Boolean = false,
     val mark: String? = null,
     val copyrightHeader: String? = null
-) {
+) : Serializable {
+    companion object {
+        private const val serialVersionUID = 20322616434400L
+    }
+
     override fun toString(): String {
         val rawLocalizedStringBuilder = StringBuilder()
         if (comment.isNotEmpty()) {
