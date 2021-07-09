@@ -7,7 +7,10 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.*
+import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.OutlinedTextField
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -20,16 +23,23 @@ import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import me.nickp0is0n.easylocalize.models.LocalizedString
 import me.nickp0is0n.easylocalize.utils.LocalizeParser
 import java.awt.FileDialog
+import java.io.*
 
 class MainWindowView {
     private lateinit var stringList: SnapshotStateList<LocalizedString>
     private lateinit var fieldValuesModel: FieldValuesViewModel
+    private var currentSaveFile: File? = null
     private var selectedID = -1
     private val controller = MainWindowController()
     private val waitForFile = mutableStateOf(false)
+    private val waitForSave = mutableStateOf(false)
 
     @Composable
     fun MainUI() {
@@ -72,6 +82,7 @@ class MainWindowView {
                 }
             }
             checkIfOpenButtonClicked()
+            checkIfSaveButtonClicked()
         }
     }
 
@@ -115,6 +126,9 @@ class MainWindowView {
             colors = ButtonDefaults.buttonColors(backgroundColor = Color.White),
             shape = RectangleShape,
             onClick = {
+                if (selectedID != -1 && currentSaveFile != null) {
+                    saveProjectFile()
+                }
                 fieldValuesModel.stringFieldValue.value = item.text
                 fieldValuesModel.commentFieldValue.value = item.comment
                 selectedID = stringList.indexOf(item)
@@ -227,6 +241,40 @@ class MainWindowView {
     }
 
     @Composable
+    private fun checkIfSaveButtonClicked() {
+        if (waitForSave.value) {
+            val window = LocalAppWindow.current
+            val saveDialog = FileDialog(window.window)
+            saveDialog.mode = FileDialog.SAVE
+            saveDialog.file = "*.elproject"
+            saveDialog.isVisible = true
+            if (saveDialog.files.isNotEmpty()) {
+                currentSaveFile = saveDialog.files[0]
+                saveProjectFile()
+            }
+            waitForSave.value = false
+        }
+    }
+
+    private fun saveProjectFile() {
+        CoroutineScope(Dispatchers.IO).launch {
+            writeToProjectFile()
+        }
+    }
+
+    private suspend fun writeToProjectFile() = withContext(Dispatchers.IO) {
+        val list = stringList.toList()
+        try {
+            ObjectOutputStream(FileOutputStream(currentSaveFile!!)).use {
+                it.writeObject(list)
+            }
+        }
+        catch (e: IOException) {
+            e.printStackTrace()
+        }
+    }
+
+    @Composable
     private fun AppMenuBar(): MenuBar =
         MenuBar(
             Menu(
@@ -235,6 +283,13 @@ class MainWindowView {
                     name = "Open...",
                     onClick = {
                         waitForFile.value = true
+                    },
+                    shortcut = KeyStroke(Key.O)
+                ),
+                MenuItem(
+                    name = "Save project as...",
+                    onClick = {
+                        waitForSave.value = true
                     },
                     shortcut = KeyStroke(Key.O)
                 )

@@ -1,7 +1,6 @@
 package me.nickp0is0n.easylocalize.ui
 
 import androidx.compose.desktop.AppWindow
-import androidx.compose.ui.window.Notifier
 import me.nickp0is0n.easylocalize.models.LocalizedString
 import me.nickp0is0n.easylocalize.utils.LocalizeExporter
 import java.awt.FileDialog
