@@ -193,12 +193,19 @@ class MainWindowView {
 
     @Composable
     private fun retrieveStringList(): List<LocalizedString> {
+        currentSaveFile = null
         val parser = LocalizeParser()
         val window = LocalAppWindow.current
         val openDialog = FileDialog(window.window)
         openDialog.isVisible = true
         if (openDialog.files.isEmpty()) {
             return listOf(LocalizedString("No file loaded", "", ""))
+        }
+        if (openDialog.files[0].extension == "elproject") {
+            currentSaveFile = openDialog.files[0]
+            ObjectInputStream(FileInputStream(currentSaveFile!!)).use {
+                return it.readObject() as List<LocalizedString>
+            }
         }
         val stringFile = openDialog.files[0]
         waitForFile.value = false
