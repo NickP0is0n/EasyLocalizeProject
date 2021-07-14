@@ -186,6 +186,7 @@ class MainWindowView {
                         )
                     }
                 } },
+                readOnly = true,
                 modifier = Modifier
                     .padding(top = 0.dp)
                     .size(width = 450.dp, height = 160.dp))
