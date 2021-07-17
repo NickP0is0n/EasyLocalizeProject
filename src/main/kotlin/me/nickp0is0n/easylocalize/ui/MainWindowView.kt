@@ -28,6 +28,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import me.nickp0is0n.easylocalize.models.LocalizedString
+import me.nickp0is0n.easylocalize.models.ParserSettings
 import me.nickp0is0n.easylocalize.utils.LocalizeParser
 import java.awt.FileDialog
 import java.io.*
@@ -40,6 +41,7 @@ class MainWindowView {
     private val controller = MainWindowController()
     private val waitForFile = mutableStateOf(false)
     private val waitForSave = mutableStateOf(false)
+    private val parserSettings = ParserSettings()
 
     @Composable
     fun MainUI() {
