@@ -213,7 +213,7 @@ class MainWindowView {
     @Composable
     private fun retrieveStringList(): List<LocalizedString> {
         currentSaveFile = null
-        val parser = LocalizeParser()
+        val parser = LocalizeParser(parserSettings)
         val window = LocalAppWindow.current
         val openDialog = FileDialog(window.window)
         openDialog.isVisible = true
