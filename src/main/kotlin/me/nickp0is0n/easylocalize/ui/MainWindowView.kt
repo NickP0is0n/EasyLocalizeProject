@@ -41,6 +41,7 @@ class MainWindowView {
     private val controller = MainWindowController()
     private val waitForFile = mutableStateOf(false)
     private val waitForSave = mutableStateOf(false)
+    private val waitForParserSettings = mutableStateOf(false)
     private val parserSettings = ParserSettings()
 
     @Composable
@@ -85,6 +86,7 @@ class MainWindowView {
             }
             checkIfOpenButtonClicked()
             checkIfSaveButtonClicked()
+            checkIfParserSettingsButtonClicked()
         }
     }
 
@@ -296,8 +298,25 @@ class MainWindowView {
                     },
                     shortcut = KeyStroke(Key.O)
                 )
+            ),
+            Menu(
+                name = "Tools",
+                MenuItem(
+                    name = "Parser settings",
+                    onClick = {
+                        waitForParserSettings.value = true
+                    }
+                )
             )
         )
+
+    @Composable
+    private fun checkIfParserSettingsButtonClicked() {
+        if (waitForParserSettings.value) {
+            ParserSettingsView(parserSettings).SettingsWindow()
+            waitForParserSettings.value = false
+        }
+    }
 
     @Composable
     private fun setTextFieldDefaultValues() {
