@@ -60,8 +60,7 @@ class MainWindowView {
                 commentFieldValue = remember { mutableStateOf("Select an ID") }
             )
 
-            val originalList = retrieveStringList()
-            stringList = remember { mutableStateListOf(*originalList.toTypedArray()) }
+            stringList = remember { mutableStateListOf(*listOf(LocalizedString("No file loaded", "", "")).toTypedArray()) }
             StringList(stringList)
             if (selectedID == -1) {
                 setTextFieldDefaultValues()
