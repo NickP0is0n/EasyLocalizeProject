@@ -32,6 +32,8 @@ import me.nickp0is0n.easylocalize.models.ParserSettings
 import me.nickp0is0n.easylocalize.utils.AppInfo
 import me.nickp0is0n.easylocalize.utils.LocalizeParser
 import java.awt.FileDialog
+import java.awt.Toolkit
+import java.awt.datatransfer.StringSelection
 import java.io.*
 
 class MainWindowView {
@@ -69,19 +71,30 @@ class MainWindowView {
             Column {
                 StringTextField()
                 CommentTextField()
-                Button (
-                    onClick = {
-                        controller.onExportButtonClick(stringList, window)
-                        if (controller.exportedSuccessfully) {
-                            val notifier = Notifier()
-                            notifier.notify("Success", "Localization file has been successfully exported.")
-                            controller.exportedSuccessfully = false // resets the value
-                        }
-                    },
-                    colors = ButtonDefaults.buttonColors(backgroundColor = Color(30, 144, 255)),
-                    modifier = Modifier.padding(top = 10.dp)
-                        ) {
-                    Text(text ="Export translations to file...", color = Color.White)
+                Row (modifier = Modifier.padding(top = 10.dp)) {
+                    Button (
+                        onClick = {
+                            controller.onExportButtonClick(stringList, window)
+                            if (controller.exportedSuccessfully) {
+                                val notifier = Notifier()
+                                notifier.notify("Success", "Localization file has been successfully exported.")
+                                controller.exportedSuccessfully = false // resets the value
+                            }
+                        },
+                        colors = ButtonDefaults.buttonColors(backgroundColor = Color(30, 144, 255)),
+                    ) {
+                        Text(text ="Export translations to file...", color = Color.White)
+                    }
+                    Button (
+                        onClick = {
+                            val selection = StringSelection(stringList[selectedID].toString())
+                            Toolkit.getDefaultToolkit().systemClipboard.setContents(selection, null)
+                        },
+                        colors = ButtonDefaults.buttonColors(backgroundColor = Color(30, 144, 255)),
+                        modifier = Modifier.padding(start = 6.dp)
+                    ) {
+                        Text(text ="Copy string to clipboard", color = Color.White)
+                    }
                 }
             }
             checkIfOpenButtonClicked()
