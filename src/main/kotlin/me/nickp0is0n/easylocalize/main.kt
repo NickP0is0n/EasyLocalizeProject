@@ -2,9 +2,10 @@ import androidx.compose.desktop.Window
 import androidx.compose.material.MaterialTheme
 import androidx.compose.ui.unit.IntSize
 import me.nickp0is0n.easylocalize.ui.MainWindowView
+import me.nickp0is0n.easylocalize.utils.AppInfo
 
 fun main() = Window (
-    title = "EasyLocalize 0.0.14 Alpha",
+    title = AppInfo.windowTitle,
     resizable = false,
     size = IntSize(780, 455)
 ) {

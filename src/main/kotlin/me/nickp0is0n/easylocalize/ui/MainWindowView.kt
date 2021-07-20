@@ -29,6 +29,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import me.nickp0is0n.easylocalize.models.LocalizedString
 import me.nickp0is0n.easylocalize.models.ParserSettings
+import me.nickp0is0n.easylocalize.utils.AppInfo
 import me.nickp0is0n.easylocalize.utils.LocalizeParser
 import java.awt.FileDialog
 import java.io.*
@@ -217,8 +218,11 @@ class MainWindowView {
         val openDialog = FileDialog(window.window)
         openDialog.isVisible = true
         if (openDialog.files.isEmpty()) {
+            LocalAppWindow.current.setTitle(AppInfo.windowTitle)
             return listOf(LocalizedString("No file loaded", "", ""))
         }
+        waitForFile.value = false
+        LocalAppWindow.current.setTitle(AppInfo.windowTitle + " – " + openDialog.files[0].name)
         if (openDialog.files[0].extension == "elproject") {
             currentSaveFile = openDialog.files[0]
             ObjectInputStream(FileInputStream(currentSaveFile!!)).use {
@@ -226,7 +230,6 @@ class MainWindowView {
             }
         }
         val stringFile = openDialog.files[0]
-        waitForFile.value = false
         return parser.fromFile(stringFile)
     }
 
