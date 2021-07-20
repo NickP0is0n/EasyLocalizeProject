@@ -127,7 +127,7 @@ class MainWindowView {
             modifier = Modifier
                 .size(width = 300.dp, height = 50.dp)
                 .border(width = 1.dp, Color(245, 245, 245)),
-            colors = ButtonDefaults.buttonColors(backgroundColor = Color.White),
+            colors = if(stringList.indexOf(item) != selectedID || item.id == "No file loaded") ButtonDefaults.buttonColors(backgroundColor = Color.White) else ButtonDefaults.buttonColors(backgroundColor = Color.LightGray),
             shape = RectangleShape,
             onClick = {
                 if (selectedID != -1 && currentSaveFile != null) {
@@ -136,6 +136,7 @@ class MainWindowView {
                 fieldValuesModel.stringFieldValue.value = item.text
                 fieldValuesModel.commentFieldValue.value = item.comment
                 selectedID = stringList.indexOf(item)
+                this@MainWindowView.stringList[selectedID] = this@MainWindowView.stringList[selectedID] //selection color workaround
             }
         ) {
             Text(item.id)
