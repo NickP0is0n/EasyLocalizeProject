@@ -33,7 +33,12 @@ public class LocalizeParser {
 
         while ((currentLine=reader.readLine())!=null) {
             if (isAComment(currentLine)) {
-                setCurrentComment(currentComment + parseComment(currentLine));
+                if (!isCommentMultilined && !currentComment.isEmpty()) {
+                    setCurrentComment(currentComment + "\n" + parseComment(currentLine));
+                }
+                else {
+                    setCurrentComment(currentComment + parseComment(currentLine));
+                }
                 if (strings.isEmpty() && !multilineCommentMode && !isCommentMultilined) {
                     isHeaderAlreadyExist = true;
                 }

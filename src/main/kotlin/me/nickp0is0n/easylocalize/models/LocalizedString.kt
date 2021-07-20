@@ -28,7 +28,7 @@ data class LocalizedString @JvmOverloads constructor(
                 commentStrings.forEach {
                     rawLocalizedStringBuilder
                         .append("// ")
-                        .append(it)
+                        .append(it.replace("\n", "\n// "))
                         .append("\n")
                 }
             }
