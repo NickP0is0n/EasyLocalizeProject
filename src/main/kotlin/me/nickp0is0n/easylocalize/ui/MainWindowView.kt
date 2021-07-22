@@ -312,7 +312,7 @@ class MainWindowView {
                     onClick = {
                         waitForSave.value = true
                     },
-                    shortcut = KeyStroke(Key.O)
+                    shortcut = KeyStroke(Key.S)
                 )
             ),
             Menu(
