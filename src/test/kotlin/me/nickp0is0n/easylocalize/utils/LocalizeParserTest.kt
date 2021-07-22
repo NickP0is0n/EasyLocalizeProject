@@ -1,12 +1,13 @@
 package me.nickp0is0n.easylocalize.utils
 
+import me.nickp0is0n.easylocalize.models.ParserSettings
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.DisplayName
 import java.io.File
 
 class LocalizeParserTest {
-    val parser = LocalizeParser()
+    val parser = LocalizeParser(ParserSettings())
 
     @DisplayName("Reading basic string without comment")
     @Test
@@ -22,7 +23,7 @@ class LocalizeParserTest {
         val result = parser.fromFile(File(this.javaClass.classLoader.getResource("parser/withComment").toURI()))
         assertEquals("CONTINUE-ERASE", result[0].id)
         assertEquals("Continue and Erase", result[0].text)
-        assertEquals("Sample comment\n", result[0].comment)
+        assertEquals("Sample comment", result[0].comment)
     }
 
     @DisplayName("Reading string with multiple single comments")
@@ -31,7 +32,7 @@ class LocalizeParserTest {
         val result = parser.fromFile(File(this.javaClass.classLoader.getResource("parser/withMultipleSingleComments").toURI()))
         assertEquals("CONTINUE-ERASE", result[0].id)
         assertEquals("Continue and Erase", result[0].text)
-        assertEquals("Sample\ncomment\n", result[0].comment)
+        assertEquals("Sample\ncomment", result[0].comment)
     }
 
     @DisplayName("Reading string with single-line multiline-style comment")
@@ -49,7 +50,7 @@ class LocalizeParserTest {
         val result = parser.fromFile(File(this.javaClass.classLoader.getResource("parser/withMultilineCommentMulti").toURI()))
         assertEquals(result[0].id, "CONTINUE-ERASE")
         assertEquals(result[0].text, "Continue and Erase")
-        assertEquals(result[0].comment, "Sample\ncomment")
+        assertEquals(result[0].copyrightHeader, "Sample\ncomment")
     }
 
     @DisplayName("Reading string with multiline comment that contains empty lines")
@@ -58,7 +59,7 @@ class LocalizeParserTest {
         val result = parser.fromFile(File(this.javaClass.classLoader.getResource("parser/withMultilineCommentMultiWithEmptyLines").toURI()))
         assertEquals(result[0].id, "CONTINUE-ERASE")
         assertEquals(result[0].text, "Continue and Erase")
-        assertEquals(result[0].comment, "Sample\n\ncomment")
+        assertEquals(result[0].copyrightHeader, "Sample\n\ncomment")
     }
 
     @DisplayName("Reading multi-lined string")
