@@ -50,19 +50,23 @@ class LocalizeParser(val settings: ParserSettings) {
                 }
 
                 currentLine != "" || parserModel.multilineCommentMode -> {
-                    val wrappedStringPattern = Pattern.compile("([\"])(?:(?=(\\\\?))\\2.)*?\\1")
-                    val patternMatcher = wrappedStringPattern.matcher(currentLine!!)
-                    retrieveId(currentLine!!, patternMatcher)
-                    retrieveTextString(currentLine!!, patternMatcher)
-                    if (settings.ignoreCopyrightHeader) {
-                        parserModel.header = null
-                    }
-                    finalizeLocalizedString(currentLine!!, isCommentMultilined)
+                    handleRegularLine(currentLine!!, isCommentMultilined)
                     isCommentMultilined = false
                 }
             }
         }
         return parsedStrings
+    }
+
+    private fun handleRegularLine(currentLine: String, isCommentMultilined: Boolean) {
+        val wrappedStringPattern = Pattern.compile("([\"])(?:(?=(\\\\?))\\2.)*?\\1")
+        val patternMatcher = wrappedStringPattern.matcher(currentLine)
+        retrieveId(currentLine, patternMatcher)
+        retrieveTextString(currentLine, patternMatcher)
+        if (settings.ignoreCopyrightHeader) {
+            parserModel.header = null
+        }
+        finalizeLocalizedString(currentLine, isCommentMultilined)
     }
 
     private fun finalizeLocalizedString(currentLine: String, isCommentMultilined: Boolean) {
