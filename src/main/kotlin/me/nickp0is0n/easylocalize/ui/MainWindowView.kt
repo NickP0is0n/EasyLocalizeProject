@@ -230,6 +230,7 @@ class MainWindowView {
         val parser = LocalizeParser(parserSettings)
         val window = LocalAppWindow.current
         val openDialog = FileDialog(window.window)
+
         openDialog.isVisible = true
         if (openDialog.files.isEmpty()) {
             LocalAppWindow.current.setTitle(AppInfo.windowTitle)
@@ -244,7 +245,7 @@ class MainWindowView {
             }
         }
         val stringFile = openDialog.files[0]
-        return parser.fromFile(stringFile)
+        return try { parser.fromFile(stringFile) } catch (e: IOException) { listOf(LocalizedString("No file loaded", "", "")) }
     }
 
     @Composable
