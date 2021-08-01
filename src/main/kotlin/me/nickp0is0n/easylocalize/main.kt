@@ -1,3 +1,4 @@
+import androidx.compose.desktop.DesktopTheme
 import androidx.compose.desktop.Window
 import androidx.compose.material.MaterialTheme
 import androidx.compose.ui.unit.IntSize
@@ -14,7 +15,9 @@ fun main() {
         System.setProperty("apple.laf.useScreenMenuBar", "true")
         val currentView = MainWindowView()
         MaterialTheme {
-            currentView.MainUI()
+            DesktopTheme {
+                currentView.MainUI()
+            }
         }
     }
 }
