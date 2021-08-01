@@ -1,28 +1,32 @@
 package me.nickp0is0n.easylocalize.ui
 
 import androidx.compose.desktop.LocalAppWindow
+import androidx.compose.foundation.BoxWithTooltip
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.OutlinedTextField
-import androidx.compose.material.Text
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.*
+import androidx.compose.ui.window.v1.KeyStroke
+import androidx.compose.ui.window.v1.Menu
+import androidx.compose.ui.window.v1.MenuBar
+import androidx.compose.ui.window.v1.MenuItem
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -136,23 +140,36 @@ class MainWindowView {
 
     @Composable
     private fun StringItem(item: LocalizedString) {
-        Button(
-            modifier = Modifier
-                .size(width = 300.dp, height = 50.dp)
-                .border(width = 1.dp, Color(245, 245, 245)),
-            colors = if(stringList.indexOf(item) != selectedID || item.id == "No file loaded") ButtonDefaults.buttonColors(backgroundColor = Color.White) else ButtonDefaults.buttonColors(backgroundColor = Color.LightGray),
-            shape = RectangleShape,
-            onClick = {
-                if (selectedID != -1 && currentSaveFile != null) {
-                    saveProjectFile()
-                }
-                fieldValuesModel.stringFieldValue.value = item.text
-                fieldValuesModel.commentFieldValue.value = item.comment
-                selectedID = stringList.indexOf(item)
-                this@MainWindowView.stringList[selectedID] = this@MainWindowView.stringList[selectedID] //selection color workaround
+        BoxWithTooltip(tooltip = {
+            // composable tooltip content
+            Surface(
+                modifier = Modifier.shadow(4.dp),
+                shape = RoundedCornerShape(4.dp)
+            ) {
+                Text(
+                    text = item.text,
+                    modifier = Modifier.padding(10.dp)
+                )
             }
-        ) {
-            Text(item.id)
+        }) {
+            Button(
+                modifier = Modifier
+                    .size(width = 300.dp, height = 50.dp)
+                    .border(width = 1.dp, Color(245, 245, 245)),
+                colors = if(stringList.indexOf(item) != selectedID || item.id == "No file loaded") ButtonDefaults.buttonColors(backgroundColor = Color.White) else ButtonDefaults.buttonColors(backgroundColor = Color.LightGray),
+                shape = RectangleShape,
+                onClick = {
+                    if (selectedID != -1 && currentSaveFile != null) {
+                        saveProjectFile()
+                    }
+                    fieldValuesModel.stringFieldValue.value = item.text
+                    fieldValuesModel.commentFieldValue.value = item.comment
+                    selectedID = stringList.indexOf(item)
+                    this@MainWindowView.stringList[selectedID] = this@MainWindowView.stringList[selectedID] //selection color workaround
+                }
+            ) {
+                Text(item.id)
+            }
         }
     }
 
