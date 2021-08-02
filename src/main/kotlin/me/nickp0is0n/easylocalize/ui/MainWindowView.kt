@@ -158,6 +158,7 @@ class MainWindowView {
                     .border(width = 1.dp, Color(245, 245, 245)),
                 colors = if(stringList.indexOf(item) != selectedID || item.id == "No file loaded") ButtonDefaults.buttonColors(backgroundColor = Color.White) else ButtonDefaults.buttonColors(backgroundColor = Color.LightGray),
                 shape = RectangleShape,
+                elevation = null,
                 onClick = {
                     if (selectedID != -1 && currentSaveFile != null) {
                         saveProjectFile()
