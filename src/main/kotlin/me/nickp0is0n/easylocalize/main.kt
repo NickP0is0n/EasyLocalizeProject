@@ -10,7 +10,7 @@ fun main() {
     Window (
         title = AppInfo.windowTitle,
         resizable = false,
-        size = IntSize(780, 455)
+        size = IntSize(780, 470)
     ) {
         System.setProperty("apple.laf.useScreenMenuBar", "true")
         val currentView = MainWindowView()

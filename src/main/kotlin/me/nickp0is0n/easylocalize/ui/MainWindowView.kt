@@ -15,11 +15,12 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshots.SnapshotStateList
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
-import androidx.compose.ui.input.key.Key
+import androidx.compose.ui.input.key.*
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.*
@@ -174,6 +175,7 @@ class MainWindowView {
         }
     }
 
+    @OptIn(ExperimentalComposeUiApi::class)
     @Composable
     private fun StringTextField() {
         Column {
@@ -196,8 +198,21 @@ class MainWindowView {
                     }
                 } },
                 modifier = Modifier
-                    .padding(top = 0.dp)
-                    .size(width = 450.dp, height = 160.dp))
+                    .padding(top = 10.dp)
+                    .size(width = 450.dp, height = 160.dp)
+                    .onPreviewKeyEvent {
+                        when {
+                            (it.isAltPressed && it.key == Key.DirectionDown) -> {
+                                if (selectedID != -1 && selectedID + 1 < stringList.size) {
+                                    selectedID++
+                                    fieldValuesModel.stringFieldValue.value = stringList[selectedID].text
+                                    fieldValuesModel.commentFieldValue.value = stringList[selectedID].comment
+                                }
+                                true
+                            }
+                            else -> false
+                        }
+                    })
         }
     }
 
@@ -224,7 +239,7 @@ class MainWindowView {
                 } },
                 readOnly = true,
                 modifier = Modifier
-                    .padding(top = 0.dp)
+                    .padding(top = 10.dp)
                     .size(width = 450.dp, height = 160.dp))
         }
     }
@@ -314,6 +329,7 @@ class MainWindowView {
         }
     }
 
+    @OptIn(ExperimentalComposeUiApi::class)
     @Composable
     private fun AppMenuBar(): MenuBar =
         MenuBar(
