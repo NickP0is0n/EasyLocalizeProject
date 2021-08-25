@@ -200,16 +200,28 @@ class MainWindowView {
                 modifier = Modifier
                     .padding(top = 10.dp)
                     .size(width = 450.dp, height = 160.dp)
-                    .onPreviewKeyEvent {
+                    .onKeyEvent {
                         when {
                             (it.isAltPressed && it.key == Key.DirectionDown) -> {
                                 if (selectedID != -1 && selectedID + 1 < stringList.size) {
                                     selectedID++
                                     fieldValuesModel.stringFieldValue.value = stringList[selectedID].text
                                     fieldValuesModel.commentFieldValue.value = stringList[selectedID].comment
+                                    this@MainWindowView.stringList[selectedID] = this@MainWindowView.stringList[selectedID] //selection color workaround
                                 }
                                 true
                             }
+
+                            (it.isAltPressed && it.key == Key.DirectionUp) -> {
+                                if (selectedID != -1 && selectedID - 1 > 0) {
+                                    selectedID--
+                                    fieldValuesModel.stringFieldValue.value = stringList[selectedID].text
+                                    fieldValuesModel.commentFieldValue.value = stringList[selectedID].comment
+                                    this@MainWindowView.stringList[selectedID] = this@MainWindowView.stringList[selectedID] //selection color workaround
+                                }
+                                true
+                            }
+
                             else -> false
                         }
                     })
