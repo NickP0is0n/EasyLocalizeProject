@@ -203,6 +203,10 @@ class MainWindowView {
                     .onKeyEvent {
                         when {
                             (it.isAltPressed && it.key == Key.DirectionDown) -> {
+                                if (selectedID != -1 && currentSaveFile != null) {
+                                    saveProjectFile()
+                                }
+
                                 if (selectedID != -1 && selectedID + 1 < stringList.size) {
                                     selectedID++
                                     fieldValuesModel.stringFieldValue.value = stringList[selectedID].text
@@ -213,6 +217,10 @@ class MainWindowView {
                             }
 
                             (it.isAltPressed && it.key == Key.DirectionUp) -> {
+                                if (selectedID != -1 && currentSaveFile != null) {
+                                    saveProjectFile()
+                                }
+
                                 if (selectedID != -1 && selectedID - 1 > 0) {
                                     selectedID--
                                     fieldValuesModel.stringFieldValue.value = stringList[selectedID].text
