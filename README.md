@@ -8,4 +8,4 @@ Application code at this moment was written solely by me, however it uses severa
 ## Supported OS
 Although it is possible to compile and run the program on Windows and Linux, only macOS 10.14 and newer is supported officially and only macOS artifacts are available to download in binary form.
 ## Caution
-The app is still in alpha testing stage. Developers will not provide any warranty and are not liable for any claim, damages or other liability. Always save your file during work to prevent  possible data loss.
+The app is in beta testing stage, however developers will not provide any warranty and are not liable for any claim, damages or other liability. Always save your file during work to prevent possible data loss.
