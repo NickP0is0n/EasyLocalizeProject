@@ -72,7 +72,15 @@ class MainWindowView {
             stringList = remember { mutableStateListOf(*listOf(LocalizedString("No file loaded", "", "")).toTypedArray()) }
             Column {
                 SearchBar()
-                StringList(stringList.filter { it.id.contains(searchBarText.value) || it.text.contains(searchBarText.value) || it.comment.contains(searchBarText.value) })
+                StringList(stringList
+                    .filter { it.id.contains(searchBarText.value) || it.text.contains(searchBarText.value) || it.comment.contains(searchBarText.value) }
+                    .toMutableList()
+                    .also {
+                        if (it.size == 0) {
+                            it.add(LocalizedString("Not found", "", ""))
+                        }
+                    }
+                )
             }
             if (selectedID == -1) {
                 setTextFieldDefaultValues()
@@ -185,7 +193,9 @@ class MainWindowView {
                     fieldValuesModel.stringFieldValue.value = item.text
                     fieldValuesModel.commentFieldValue.value = item.comment
                     selectedID = stringList.indexOf(item)
-                    this@MainWindowView.stringList[selectedID] = this@MainWindowView.stringList[selectedID] //selection color workaround
+                    if (selectedID != -1) {
+                        this@MainWindowView.stringList[selectedID] = this@MainWindowView.stringList[selectedID]
+                    } //selection color workaround
                 }
             ) {
                 Text(item.id)
