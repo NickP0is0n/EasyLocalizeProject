@@ -52,13 +52,17 @@ class MainWindowView {
     private val waitForParserSettings = mutableStateOf(false)
     private val parserSettings = ParserSettings()
     private val searchBarText = mutableStateOf("")
+    private var menuBarInitialized = false
 
     @Composable
     fun MainUI() {
         val window = LocalAppWindow.current
-        window.setMenuBar(
-            AppMenuBar()
-        )
+        if (!menuBarInitialized) {
+            window.setMenuBar(
+                AppMenuBar()
+            )
+            menuBarInitialized = true
+        }
 
         Box(modifier = Modifier
             .background(color = Color(255, 255, 255))
