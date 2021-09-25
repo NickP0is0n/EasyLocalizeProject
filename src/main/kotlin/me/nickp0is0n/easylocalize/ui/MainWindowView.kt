@@ -1,5 +1,6 @@
 package me.nickp0is0n.easylocalize.ui
 
+import androidx.compose.desktop.AppWindow
 import androidx.compose.desktop.LocalAppWindow
 import androidx.compose.foundation.BoxWithTooltip
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -89,38 +90,43 @@ class MainWindowView {
             if (selectedID == -1) {
                 setTextFieldDefaultValues()
             }
-            Column {
-                StringTextField()
-                CommentTextField()
-                Row (modifier = Modifier.padding(top = 10.dp)) {
-                    Button (
-                        onClick = {
-                            controller.onExportButtonClick(stringList, window)
-                            if (controller.exportedSuccessfully) {
-                                val notifier = Notifier()
-                                notifier.notify("Success", "Localization file has been successfully exported.")
-                                controller.exportedSuccessfully = false // resets the value
-                            }
-                        },
-                        colors = ButtonDefaults.buttonColors(backgroundColor = Color(30, 144, 255)),
-                    ) {
-                        Text(text ="Export translations to file...", color = Color.White)
-                    }
-                    Button (
-                        onClick = {
-                            val selection = StringSelection(stringList[selectedID].toString())
-                            Toolkit.getDefaultToolkit().systemClipboard.setContents(selection, null)
-                        },
-                        colors = ButtonDefaults.buttonColors(backgroundColor = Color(30, 144, 255)),
-                        modifier = Modifier.padding(start = 6.dp)
-                    ) {
-                        Text(text ="Copy string to clipboard", color = Color.White)
-                    }
-                }
-            }
+            EditingSpace(window)
             checkIfOpenButtonClicked()
             checkIfSaveButtonClicked()
             checkIfParserSettingsButtonClicked()
+        }
+    }
+
+    @Composable
+    private fun EditingSpace(window: AppWindow) {
+        Column {
+            StringTextField()
+            CommentTextField()
+            Row(modifier = Modifier.padding(top = 10.dp)) {
+                Button(
+                    onClick = {
+                        controller.onExportButtonClick(stringList, window)
+                        if (controller.exportedSuccessfully) {
+                            val notifier = Notifier()
+                            notifier.notify("Success", "Localization file has been successfully exported.")
+                            controller.exportedSuccessfully = false // resets the value
+                        }
+                    },
+                    colors = ButtonDefaults.buttonColors(backgroundColor = Color(30, 144, 255)),
+                ) {
+                    Text(text = "Export translations to file...", color = Color.White)
+                }
+                Button(
+                    onClick = {
+                        val selection = StringSelection(stringList[selectedID].toString())
+                        Toolkit.getDefaultToolkit().systemClipboard.setContents(selection, null)
+                    },
+                    colors = ButtonDefaults.buttonColors(backgroundColor = Color(30, 144, 255)),
+                    modifier = Modifier.padding(start = 6.dp)
+                ) {
+                    Text(text = "Copy string to clipboard", color = Color.White)
+                }
+            }
         }
     }
 
