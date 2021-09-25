@@ -69,7 +69,10 @@ class MainWindowView {
             )
 
             stringList = remember { mutableStateListOf(*listOf(LocalizedString("No file loaded", "", "")).toTypedArray()) }
-            StringList(stringList)
+            Column {
+                SearchBar()
+                StringList(stringList)
+            }
             if (selectedID == -1) {
                 setTextFieldDefaultValues()
             }
@@ -106,6 +109,21 @@ class MainWindowView {
             checkIfSaveButtonClicked()
             checkIfParserSettingsButtonClicked()
         }
+    }
+
+    @Composable
+    private fun SearchBar() {
+        val searchBarText = remember { mutableStateOf("") }
+        OutlinedTextField(
+            value = searchBarText.value,
+            onValueChange = {
+               searchBarText.value = it
+            },
+            label = { Text("Search") },
+            modifier = Modifier
+                .padding(top = 10.dp, start = 10.dp)
+                .size(width = 300.dp, height = 56.dp)
+        )
     }
 
     @OptIn(ExperimentalFoundationApi::class)
