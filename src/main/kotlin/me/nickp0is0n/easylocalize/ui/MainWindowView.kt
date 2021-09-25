@@ -51,6 +51,7 @@ class MainWindowView {
     private val waitForSave = mutableStateOf(false)
     private val waitForParserSettings = mutableStateOf(false)
     private val parserSettings = ParserSettings()
+    private val searchBarText = mutableStateOf("")
 
     @Composable
     fun MainUI() {
@@ -71,7 +72,7 @@ class MainWindowView {
             stringList = remember { mutableStateListOf(*listOf(LocalizedString("No file loaded", "", "")).toTypedArray()) }
             Column {
                 SearchBar()
-                StringList(stringList)
+                StringList(stringList.filter { it.id.contains(searchBarText.value) || it.text.contains(searchBarText.value) || it.comment.contains(searchBarText.value) })
             }
             if (selectedID == -1) {
                 setTextFieldDefaultValues()
@@ -113,7 +114,6 @@ class MainWindowView {
 
     @Composable
     private fun SearchBar() {
-        val searchBarText = remember { mutableStateOf("") }
         OutlinedTextField(
             value = searchBarText.value,
             onValueChange = {
