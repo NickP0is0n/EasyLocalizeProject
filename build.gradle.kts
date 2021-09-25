@@ -39,6 +39,11 @@ compose.desktop {
                 bundleID = "me.nickp0is0n.easylocalize"
                 dockName = "EasyLocalize"
                 iconFile.set(project.file("easylocalize_logo.icns"))
+                signing {
+                    sign.set(true)
+                    identity.set("nickchaywork@gmail.com")
+                    keychain.set("/Users/mykolachaikovskyi/Library/Keychains/login.keychain-db")
+                }
             }
         }
     }
