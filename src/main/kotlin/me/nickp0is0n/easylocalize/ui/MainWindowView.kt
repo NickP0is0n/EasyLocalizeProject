@@ -51,6 +51,7 @@ class MainWindowView {
     private val waitForSave = mutableStateOf(false)
     private val waitForParserSettings = mutableStateOf(false)
     private val parserSettings = ParserSettings()
+    private val searchBarText = mutableStateOf("")
 
     @Composable
     fun MainUI() {
@@ -69,7 +70,18 @@ class MainWindowView {
             )
 
             stringList = remember { mutableStateListOf(*listOf(LocalizedString("No file loaded", "", "")).toTypedArray()) }
-            StringList(stringList)
+            Column {
+                SearchBar()
+                StringList(stringList
+                    .filter { it.id.contains(searchBarText.value) || it.text.contains(searchBarText.value) || it.comment.contains(searchBarText.value) }
+                    .toMutableList()
+                    .also {
+                        if (it.size == 0) {
+                            it.add(LocalizedString("Not found", "", ""))
+                        }
+                    }
+                )
+            }
             if (selectedID == -1) {
                 setTextFieldDefaultValues()
             }
@@ -106,6 +118,20 @@ class MainWindowView {
             checkIfSaveButtonClicked()
             checkIfParserSettingsButtonClicked()
         }
+    }
+
+    @Composable
+    private fun SearchBar() {
+        OutlinedTextField(
+            value = searchBarText.value,
+            onValueChange = {
+               searchBarText.value = it
+            },
+            label = { Text("Search") },
+            modifier = Modifier
+                .padding(top = 10.dp, start = 10.dp)
+                .size(width = 300.dp, height = 56.dp)
+        )
     }
 
     @OptIn(ExperimentalFoundationApi::class)
@@ -167,7 +193,9 @@ class MainWindowView {
                     fieldValuesModel.stringFieldValue.value = item.text
                     fieldValuesModel.commentFieldValue.value = item.comment
                     selectedID = stringList.indexOf(item)
-                    this@MainWindowView.stringList[selectedID] = this@MainWindowView.stringList[selectedID] //selection color workaround
+                    if (selectedID != -1) {
+                        this@MainWindowView.stringList[selectedID] = this@MainWindowView.stringList[selectedID]
+                    } //selection color workaround
                 }
             ) {
                 Text(item.id)
