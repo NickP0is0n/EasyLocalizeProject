@@ -2,7 +2,7 @@ package me.nickp0is0n.easylocalize.models
 
 import java.io.Serializable
 
-data class LocalizedString @JvmOverloads constructor(
+data class LocalizedString constructor(
     val id: String,
     val text: String,
     val comment: String,
