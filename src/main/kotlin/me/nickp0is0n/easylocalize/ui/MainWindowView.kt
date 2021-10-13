@@ -11,6 +11,9 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Close
+import androidx.compose.material.icons.rounded.Search
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -18,14 +21,16 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
-import androidx.compose.ui.input.key.*
+import androidx.compose.ui.input.key.Key
+import androidx.compose.ui.input.key.isAltPressed
+import androidx.compose.ui.input.key.key
+import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.*
+import androidx.compose.ui.window.Notifier
 import androidx.compose.ui.window.v1.KeyStroke
 import androidx.compose.ui.window.v1.Menu
 import androidx.compose.ui.window.v1.MenuBar
@@ -54,7 +59,7 @@ class MainWindowView {
     private val waitForParserSettings = mutableStateOf(false)
     private val parserSettings = ParserSettings()
     private val searchBarText = mutableStateOf("")
-    private val searchBarActive = mutableStateOf(true)
+    private val searchBarActive = mutableStateOf(false)
     private var menuBarInitialized = false
 
     @Composable
@@ -152,10 +157,22 @@ class MainWindowView {
     @Composable
     private fun StringList(strings: List<LocalizedString>) {
         Column {
-            Text(
-                text = "String ID's",
-                modifier = Modifier.padding(top = 10.dp, start = 10.dp)
-            )
+            Row {
+                Text(
+                    text = "String ID's",
+                    modifier = Modifier.padding(top = 10.dp, start = 10.dp)
+                )
+                IconButton(
+                    onClick = {
+                        searchBarActive.value = !searchBarActive.value
+                    },
+                    modifier = Modifier
+                        .padding(start = 195.dp)
+                        .size(30.dp)
+                ) {
+                    if (!searchBarActive.value) Icon(Icons.Rounded.Search, "search") else Icon(Icons.Rounded.Close, "close")
+                }
+            }
             LazyColumn (
                 modifier = Modifier
                     .padding(start = 10.dp, top = 10.dp, end = 10.dp, bottom = 8.dp)
