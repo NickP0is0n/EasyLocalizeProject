@@ -18,6 +18,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
@@ -53,6 +54,7 @@ class MainWindowView {
     private val waitForParserSettings = mutableStateOf(false)
     private val parserSettings = ParserSettings()
     private val searchBarText = mutableStateOf("")
+    private val searchBarActive = mutableStateOf(true)
     private var menuBarInitialized = false
 
     @Composable
@@ -76,7 +78,9 @@ class MainWindowView {
 
             stringList = remember { mutableStateListOf(*listOf(LocalizedString("No file loaded", "", "")).toTypedArray()) }
             Column {
-                SearchBar()
+                if (searchBarActive.value) {
+                    SearchBar()
+                }
                 StringList(stringList
                     .filter { it.id.contains(searchBarText.value) || it.text.contains(searchBarText.value) || it.comment.contains(searchBarText.value) }
                     .toMutableList()
