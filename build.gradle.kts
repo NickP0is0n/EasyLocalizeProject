@@ -3,12 +3,12 @@ import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    kotlin("jvm") version "1.5.21"
+    kotlin("jvm") version "1.5.31"
     id("org.jetbrains.compose") version "1.0.0-alpha3"
 }
 
 group = "me.nickp0is0n"
-version = "0.2.1"
+version = "0.2.2"
 
 repositories {
     jcenter()
@@ -33,7 +33,7 @@ compose.desktop {
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
             packageName = "EasyLocalize"
-            packageVersion = "1.2.1"
+            packageVersion = "1.2.2"
             copyright = "Copyright (c) 2021, Mykola Chaikovskyi"
             macOS {
                 bundleID = "me.nickp0is0n.easylocalize"

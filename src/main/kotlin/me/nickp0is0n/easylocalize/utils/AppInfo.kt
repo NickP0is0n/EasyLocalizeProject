@@ -1,5 +1,5 @@
 package me.nickp0is0n.easylocalize.utils
 
 object AppInfo {
-    val windowTitle = "EasyLocalize 0.2.1 Beta"
+    val windowTitle = "EasyLocalize 0.2.2 Beta"
 }
